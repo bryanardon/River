@@ -1,0 +1,19 @@
+{
+  "name": "river",
+  "version": "1.0.0",
+  "description": "Building a compiler from scratch.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "c8": "^9.1.0",
+    "mocha": "^10.2.0"
+  },
+  "dependencies": {
+    "ohm-js": "^17.1.0"
+  }
+}
