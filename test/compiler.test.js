@@ -1,7 +1,7 @@
-import { strict as assert } from "node:assert";
-
-describe("Sample Test", () => {
-  it("should test that true === true", () => {
-    assert.equal(true, true);
-  });
-});
+import * as assert from "node:assert/strict"
+import { compile } from "../src/River.js"
+describe("Compiler", () => {
+  it("Should compile", () => {
+    assert.equal(compile(), "eventually this will return the compiled code")
+  })
+})
