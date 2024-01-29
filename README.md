@@ -33,8 +33,8 @@ In the tranquil embrace of nature, rivers flow in a manner such that ecosystems 
 ### Examples
 
 ```
-text my-name = inflow("What is your name")
-outflow(my-name)
+text my_name = inflow("What is your name")
+outflow(my_name)
 ```
 
 ```
@@ -47,10 +47,10 @@ outflow(my-name)
 ```
 
 ```
- Stream our-array ~ [1,2,3]
- Task sum_array_elements(our-array)
+ Stream our_array ~ [1,2,3]
+ Task sum_array_elements(our_array)
         num sum ~ 0
-        loop(num n in our-array)
+        loop(num n in our_array)
             sum +~ n
         return sum
 ```
