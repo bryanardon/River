@@ -1,0 +1,110 @@
+Practice {
+     Program = Decl+
+   
+     Decl = VarDecl | TaskDecl | OutflowStmt
+   
+     VarDecl = Type id "~" Exp  -- with_init
+             | Type id          -- without_init
+   
+     
+     TaskDecl = Type id "(" Params ")" Block
+     Params = ListOf<Param, ",">
+     Param = Type id ("~" Exp)?
+     Block = Stmt* 
+   
+     Type = Type "[" "]"    -- array
+          | Type "?"        -- optional
+          | num              -- number
+          | text          -- string
+          | bool          -- boolean
+          | Frozen Type     -- frozen
+   
+     Stmt = VarDecl
+          | Assignment 
+          | CallStmt 
+          | IfStmt 
+          | LoopStmt 
+          | ReturnStmt
+          | DryStmt
+          | OutflowStmt
+   
+     Assignment = id "~" Exp
+     DryStmt = dry
+     InflowStmt = inflow "(" Exp ")"
+     OutflowStmt = outflow "(" Exp ")"
+     ContinueStmt = continue
+     ReturnStmt = return Exp
+     CallStmt = Call
+   
+     
+     LoopStmt = loop "(" Exp ")" Block
+     IfStmt = if Exp Block else Block  -- with_else
+            | if Exp Block else IfStmt -- nested_if
+            | if Exp Block             -- plain_if
+     Call = id "(" Args ")"
+     Args = ListOf<Exp, ",">
+   
+     Exp  = "-" Primary  --negate
+          | Exp0
+     Exp0 = Exp0 ("||" | "??") Exp1  --ororcoalesce
+          | Exp1
+     Exp1 = Exp1 "&&" Exp2  --and
+          | Exp2
+     Exp2 = Exp3 relop Exp3  --compare
+          | Exp3
+     Exp3 = Exp3 ("+" | "-") Term --add
+          | Term
+     Term = Term ("*" | "/" | "%") Factor --mul
+          | Factor
+     Factor = Primary "**" Factor  -- power
+            | Primary
+     Primary = "(" Exp ")"              -- parens
+             | "[" NonemptyListOf<Exp, ","> "]" -- array
+             | ~num Primary "[" Exp "]" -- subscript
+             | ~num Primary "." id      -- member
+             | ~num Primary "?." id      -- unwrapmember
+             | Call
+             | id
+             | numlit
+             | true
+             | false
+             | stringlit
+             | InflowStmt
+   
+   
+     relop = "<=" | "<" | ">=" | ">" | "==" | "!="
+     access = public | private
+     
+     text = "text" ~idchar
+     bool = "bool" ~idchar
+     num = "num" ~idchar
+     inflow = "inflow" ~idchar
+     outflow = "outflow" ~idchar
+     Frozen = "Frozen" ~idchar
+     loop = "loop" ~idchar
+     if = "if" ~idchar
+     else = "else" ~idchar
+     return = "return" ~idchar
+     dry = "dry" ~idchar
+     continue = "continue" ~idchar
+     true = "true" ~idchar
+     false = "false" ~idchar
+     in = "in" ~idchar
+     ctor = "constructor" ~idchar
+     public = "public" ~idchar
+     private = "private" ~idchar
+     keyword = loop | if | else
+             | return | dry | continue
+             | true | false | text
+             | bool | num | inflow | outflow
+     id = ~keyword letter idchar*
+     idchar = alnum | "_"
+     numlit = digit+ ("." digit+)? (("e" | "E") ("+" | "-")? digit+)?
+   
+     stringlit = "\"" char* "\""
+     char = "\\u{" hexDigit+ "}"   --codepoint
+          | "\\" any               --nonbackslash
+          | ~"\"" any
+          
+     space += "//" (~"\n" any)*  --comment
+   }
