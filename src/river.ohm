@@ -1,23 +1,27 @@
-Practice {
-     Program = Decl+
+River {
+     Program = Decl* | space
    
-     Decl = VarDecl | TaskDecl | OutflowStmt
+     Decl = ModelDecl | VarDecl | TaskDecl | OutflowStmt | Stmt
    
-     VarDecl = Type id "~" Exp  -- with_init
-             | Type id          -- without_init
+     VarDecl = frozen? Type id "~" Exp  -- with_init
+             | frozen? Type id          -- without_init
    
      
-     TaskDecl = Type id "(" Params ")" Block
+     TaskDecl = task id "(" Params ")" Block
      Params = ListOf<Param, ",">
-     Param = Type id ("~" Exp)?
-     Block = Stmt* 
+     Param = Type? id ("~" Exp)?
+     Block = Stmt*
+     
+     ModelDecl = model modelname Decl*
    
      Type = Type "[" "]"    -- array
           | Type "?"        -- optional
           | num              -- number
           | text          -- string
           | bool          -- boolean
-          | Frozen Type     -- frozen
+          | stream			-- stream
+          | modelname		-- model
+          | frozen Type     -- frozen
    
      Stmt = VarDecl
           | Assignment 
@@ -27,17 +31,19 @@ Practice {
           | ReturnStmt
           | DryStmt
           | OutflowStmt
+          | InflowStmt
+          | dry
    
      Assignment = id "~" Exp
      DryStmt = dry
-     InflowStmt = inflow "(" Exp ")"
+     InflowStmt = inflow "(" (stringlit | CallStmt)? ")"
      OutflowStmt = outflow "(" Exp ")"
      ContinueStmt = continue
      ReturnStmt = return Exp
      CallStmt = Call
    
      
-     LoopStmt = loop "(" Exp ")" Block
+     LoopStmt = loop "(" Exp? ")" Block
      IfStmt = if Exp Block else Block  -- with_else
             | if Exp Block else IfStmt -- nested_if
             | if Exp Block             -- plain_if
@@ -59,7 +65,7 @@ Practice {
      Factor = Primary "**" Factor  -- power
             | Primary
      Primary = "(" Exp ")"              -- parens
-             | "[" NonemptyListOf<Exp, ","> "]" -- array
+             | "[" ListOf<Exp, ","> "]" -- array
              | ~num Primary "[" Exp "]" -- subscript
              | ~num Primary "." id      -- member
              | ~num Primary "?." id      -- unwrapmember
@@ -78,18 +84,21 @@ Practice {
      text = "text" ~idchar
      bool = "bool" ~idchar
      num = "num" ~idchar
+     stream = "stream" ~idchar
+     task = "task" ~idchar
+     model = "model" ~idchar
      inflow = "inflow" ~idchar
      outflow = "outflow" ~idchar
-     Frozen = "Frozen" ~idchar
+     frozen = "frozen" ~idchar
      loop = "loop" ~idchar
      if = "if" ~idchar
      else = "else" ~idchar
      return = "return" ~idchar
      dry = "dry" ~idchar
      continue = "continue" ~idchar
+     in = "in" ~idchar
      true = "true" ~idchar
      false = "false" ~idchar
-     in = "in" ~idchar
      ctor = "constructor" ~idchar
      public = "public" ~idchar
      private = "private" ~idchar
@@ -98,6 +107,7 @@ Practice {
              | true | false | text
              | bool | num | inflow | outflow
      id = ~keyword letter idchar*
+     modelname = ~keyword upper idchar*
      idchar = alnum | "_"
      numlit = digit+ ("." digit+)? (("e" | "E") ("+" | "-")? digit+)?
    
@@ -107,4 +117,4 @@ Practice {
           | ~"\"" any
           
      space += "//" (~"\n" any)*  --comment
-   }
+}

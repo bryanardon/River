@@ -47,25 +47,22 @@ outflow(my_name)
 ```
 
 ```
- Stream our_array ~ [1,2,3]
- Task sum_array_elements(our_array)
+ stream our_array ~ [1,2,3]
+ task sum_array_elements(our_array)
         num sum ~ 0
-        loop(num n in our_array)
-            sum +~ n
+        loop(3)
+            sum ~ sum + n
         return sum
 ```
 
 ```
-Model Dog
+model Dog
     num age = 0
-    Task birthday()
+    task birthday()
         age +~ 1
-Dog d = new Dog()
-d.birthday()
-outflow(d.age)
 ```
 
 ```
-frozen Text language_name = "River"
+frozen text language_name = "River"
 language_name = "Pyth"   // Would throw an error
 ```
