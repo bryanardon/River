@@ -1,0 +1,2 @@
+text my_name ~ inflow("What is your name")
+outflow(my_name)

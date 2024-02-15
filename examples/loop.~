@@ -1,0 +1,5 @@
+num y ~ 0
+loop()
+    if(y == 1)
+        dry
+    y +~ 1

@@ -1,0 +1,2 @@
+frozen Text language_name ~ "River"
+language_name ~ "Pyth"   // Would throw an error

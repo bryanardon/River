@@ -1,0 +1,7 @@
+Model Dog
+    num age ~ 0
+    Task birthday()
+        age +~ 1
+Dog d ~ new Dog()
+d.birthday()
+outflow(d.age)

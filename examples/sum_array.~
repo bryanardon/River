@@ -1,0 +1,6 @@
+Stream our_array ~ [1,2,3]
+Task sum_array_elements(our_array)
+    num sum ~ 0
+    loop(num n in our_array)
+        sum +~ n
+    return sum
