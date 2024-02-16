@@ -26,6 +26,7 @@ River {
      Stmt = VarDecl
           | Assignment 
           | CallStmt 
+          | IndexStmt
           | IfStmt 
           | LoopStmt 
           | ReturnStmt
@@ -41,13 +42,14 @@ River {
      ContinueStmt = continue
      ReturnStmt = return Exp
      CallStmt = Call
-   
+     IndexStmt = Index
      
      LoopStmt = loop "(" Exp? ")" Block
      IfStmt = if Exp Block else Block  -- with_else
             | if Exp Block else IfStmt -- nested_if
             | if Exp Block             -- plain_if
      Call = id "(" Args ")"
+     Index = id "[" Exp "]"
      Args = ListOf<Exp, ",">
    
      Exp  = "-" Primary  --negate
@@ -70,6 +72,7 @@ River {
              | ~num Primary "." id      -- member
              | ~num Primary "?." id      -- unwrapmember
              | Call
+             | Index
              | id
              | numlit
              | true

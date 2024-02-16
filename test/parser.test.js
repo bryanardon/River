@@ -52,9 +52,11 @@ const syntaxChecks = [
   ],
   [
     "print elements in stream ",
-    `stream our_array ~ [1,2,3] 
-     loop(3) 
-        outflow(1)`,
+    `stream our_array ~ [1,2,3]
+     index ~ 0 
+     loop(length(our_array)) 
+        outflow(our_array[index])
+        index ~ index + 1`,
   ],
   ["stream with any data type", `stream all ~ [\"Scary\", 3, true]`],
   [
