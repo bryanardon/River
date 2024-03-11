@@ -3,7 +3,7 @@
   <h1>River</h1>
 </div>
 
-### Created by Bryan Ardon-Contreras, Davis Banks, Henry Benso, Maika Tran, and Nicholas
+### Created by Bryan Ardon-Contreras, Davis Banks, Henry Benso, Maika Tran, and Nicholas Lee
 
 In the tranquil embrace of nature, rivers flow in a manner such that ecosystems flourish where it goes. This concept of a peaceful flow gave life to the concept we call River. River is a statically typed language designed to put the users first. We have created River to become a programming language where the developer feels calm expressing their programming desires.
 
